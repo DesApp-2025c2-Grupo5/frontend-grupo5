@@ -27,7 +27,7 @@ export const customMuiTheme = createTheme({
       fontWeight: 'bold',
     },
     topMenuSelected: {
-      color: blueGrey[200],
+      color: blueGrey[100],
       fontSize: '1.5rem',
       fontWeight: 'bold',
     }
@@ -42,5 +42,9 @@ export const customMuiTheme = createTheme({
         }
       }
     }
+  },
+  color: {
+    primary: '#2D6A8C',
+    secondary: '#F5F5F5',
   }
 });

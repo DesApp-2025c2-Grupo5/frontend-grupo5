@@ -1,11 +1,11 @@
-import { Box } from "@mui/material";
+import { Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 
 const HomePage = () => {
   return (
-    <Box sx={{ typography: 'h5', color: grey[900] }}>
+    <Typography variant='h5' color={grey[900]}>
         Bienvenido
-    </Box>
+    </Typography>
   )
 }
 
