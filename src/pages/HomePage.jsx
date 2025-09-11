@@ -1,9 +1,8 @@
 import { Typography } from "@mui/material";
-import { grey } from "@mui/material/colors";
 
-const HomePage = () => {
+const HomePage = ({ theme }) => {
   return (
-    <Typography variant='h5' color={grey[900]}>
+    <Typography variant='h4' color={theme.color.primary}>
         Bienvenido
     </Typography>
   )

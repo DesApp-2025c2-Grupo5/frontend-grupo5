@@ -1,9 +1,8 @@
 import { Typography } from "@mui/material";
-import { blueGrey } from "@mui/material/colors";
 
-const NotFoundPage = () => {
+const NotFoundPage = ({ theme }) => {
   return (
-    <Typography variant='h5' color={blueGrey[900]}>
+    <Typography variant='h4' color={theme.color.primary}>
       Ups! Página no encontrada
     </Typography>
   )
