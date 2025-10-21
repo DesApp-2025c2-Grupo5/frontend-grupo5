@@ -22,7 +22,7 @@ export default function ModalNuevaSTerapeutica({ openModal, setOpenModal }) {
         fechaFin: "",
         diagnostico: "",
         tratamiento: "",
-        prestador: "68e5cbb8f13207b47545ee56", // TODO: agregar prestador cuando se implemente el login
+        prestador: "",
       });
     
       const handleChangeField = (field) => (event) => {
@@ -53,7 +53,7 @@ export default function ModalNuevaSTerapeutica({ openModal, setOpenModal }) {
             fechaFin: "",
             diagnostico: "",
             tratamiento: "",
-            prestador: "68e5cbb8f13207b47545ee56", // TODO: agregar prestador cuando se implemente el login
+            prestador: "",
           });
         }
       }, [openModal, setForm]);
@@ -123,6 +123,15 @@ export default function ModalNuevaSTerapeutica({ openModal, setOpenModal }) {
             size="small"
             value={form.tratamiento}
             />
+            <TextField
+            aria-label="prestador"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            label="CUIT Prestador *"
+            onChange={handleChangeField("prestador")}
+            size="small"
+            value={form.prestador}
+            />
         </Box>
 
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
@@ -139,7 +148,7 @@ export default function ModalNuevaSTerapeutica({ openModal, setOpenModal }) {
                 color="primary" 
                 sx={{ fontSize: "22px", width: "175px", ml: 2, borderRadius: "10px" }} 
                 onClick={handleCrear} 
-                disabled={!form.dniAfiliado || !form.fechaInicio || !form.diagnostico || !form.tratamiento}>
+                disabled={!form.dniAfiliado || !form.fechaInicio || !form.diagnostico || !form.tratamiento || !form.prestador}>
             Crear
             </Button>
         </Box>
