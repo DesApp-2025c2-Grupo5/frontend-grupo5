@@ -1,7 +1,9 @@
 import React from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function TableSituacionesTerapeuticas({ situacionesTerapeuticas }) {
+    const navigate = useNavigate();
 
     if (!situacionesTerapeuticas) {
         return null;
@@ -10,6 +12,10 @@ export default function TableSituacionesTerapeuticas({ situacionesTerapeuticas }
     if (situacionesTerapeuticas.length === 0) {
         return <Typography>No se encontraron situaciones terapéuticas</Typography>
     }
+
+    const handleRowClick = (id) => {
+        navigate(`/situaciones-terapeuticas/${id}`);
+    };
 
   return (
     <TableContainer>
@@ -25,7 +31,11 @@ export default function TableSituacionesTerapeuticas({ situacionesTerapeuticas }
         </TableHead>
         <TableBody>
           {situacionesTerapeuticas.map((situacionTerapeutica) => (
-            <TableRow key={situacionTerapeutica._id}>
+            <TableRow 
+                key={situacionTerapeutica._id} 
+                onClick={() => handleRowClick(situacionTerapeutica._id)}
+                sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
+            >
                 <TableCell>{situacionTerapeutica.socio.dni}</TableCell>
                 <TableCell>{situacionTerapeutica.socio.apellidos}</TableCell>
                 <TableCell>{situacionTerapeutica.tratamiento}</TableCell>
