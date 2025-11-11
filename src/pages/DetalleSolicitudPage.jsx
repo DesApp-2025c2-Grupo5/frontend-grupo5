@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import {
-  Box, Typography, Button, TextField, MenuItem,
+  Box, Typography, Button, TextField, MenuItem, Grid,
   Select, FormControl, InputLabel, Snackbar, Alert, IconButton
 } from "@mui/material";
 import {
@@ -24,7 +24,7 @@ const ESTADOS = [
   { value: "Rechazado", label: "Rechazado" },
 ];
 
-const InfoCard = ({ icon, title, children, action }) => (
+const InfoCard = ({ icon, title, children, action, iconFooter }) => (
   <Box
     display="flex"
     flexDirection={{ xs: "column", sm: "column", md: "row" }}
@@ -58,8 +58,9 @@ const InfoCard = ({ icon, title, children, action }) => (
       }}
     >
       {icon}
+      {iconFooter}
     </Box>
-    <Box display="grid" gap={0.5} sx={{ width: "100%", textAlign: { xs: 'center', md: 'left'} }}>
+    <Box display="grid" gap={0.5} sx={{ flex: 1, minWidth: 0, textAlign: { xs: 'center', md: 'left'} }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
           {title}
@@ -179,10 +180,39 @@ export default function DetalleSolicitudPage() {
           <CartelInformacionSocio socio={solicitud.socio} />
         </Box>
 
-        <InfoCard icon={<DescriptionIcon sx={{ fontSize: 70 }} color="action" />} title="Detalles de la Solicitud">
+        <InfoCard
+          icon={<DescriptionIcon sx={{ fontSize: 70 }} color="action" />}
+          title="Detalles de la solicitud"
+        >
           <Typography variant="body1"><strong>Fecha:</strong> {solicitud.detalles?.fecha ?? "—"}</Typography>
           <Typography variant="body1"><strong>Monto:</strong> {solicitud.detalles?.monto ?? "—"}</Typography>
           <Typography variant="body1"><strong>Proveedor:</strong> {solicitud.detalles?.proveedor ?? "—"}</Typography>
+          <Grid container spacing={1} sx={{ mt: 2, flexWrap: 'nowrap' }}>
+            <Grid item>
+              <Button
+                variant="outlined"
+                component="a"
+                href="/ruta/a/factura.pdf" // Reemplazar con la ruta real
+                download
+                size="small"
+                sx={{ fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+              >
+                Descargar Factura
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                component="a"
+                href="/ruta/a/receta.pdf" // Reemplazar con la ruta real
+                download
+                size="small"
+                sx={{ fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+              >
+                Descargar Receta
+              </Button>
+            </Grid>
+          </Grid>
         </InfoCard>
 
         <InfoCard icon={<EditNoteIcon sx={{ fontSize: 70 }} color="action" />} title="Archivos adjuntos">
