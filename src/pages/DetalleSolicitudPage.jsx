@@ -15,6 +15,7 @@ import {
 import { getSolicitudById, updateSolicitud, uploadArchivosSolicitud } from "../services/index.js";
 import CartelInformacionSocio from "../components/CartelInformacionSocio.jsx";
 import HistorialCambiosModal from "../components/HistorialCambiosModal.jsx";
+import { getEstadoProps, getColoresPorEstado } from "../components/EstadosComponente.jsx";
 
 const ESTADOS = [
   { value: "Recibido", label: "Recibido" },
@@ -157,6 +158,73 @@ export default function DetalleSolicitudPage() {
     return Array.isArray(adj) ? adj : [];
   };
 
+  const renderActionButtons = () => {
+    const currentState = solicitud.estado;
+
+    const actionConfig = {
+      "Recibido": [{ targetState: "En Análisis", label: "Analizar" }],
+      "En Análisis": [{ targetState: "Observado", label: "Observar" }],
+      "Observado": [
+        { targetState: "Aprobado", label: "Aprobar" },
+        { targetState: "Rechazado", label: "Rechazar" },
+      ],
+    };
+
+    const actionButton = (targetState, label) => {
+      const colors = getColoresPorEstado(targetState);
+      const isSelected = nuevoEstado === targetState;
+
+      return (
+        <Button
+          key={targetState}
+          variant={isSelected ? "contained" : "outlined"}
+          onClick={() => setNuevoEstado(targetState)}
+          sx={{
+            width: '100%',
+            py: 1.2,
+            textTransform: 'none',
+            fontSize: '1rem',
+            mb: 1,
+            borderRadius: 2,
+            ...(isSelected
+              ? { // Contained styles
+                  backgroundColor: colors.bg,
+                  color: colors.text,
+                  borderColor: colors.bg,
+                  '&:hover': {
+                    backgroundColor: colors.bg,
+                    filter: 'brightness(95%)'
+                  }
+                }
+              : { // Outlined styles
+                  color: colors.text,
+                  borderColor: colors.text,
+                  '&:hover': {
+                    backgroundColor: colors.bg,
+                    color: colors.text,
+                    borderColor: colors.bg,
+                  }
+                })
+          }}
+        >
+          {label}
+        </Button>
+      );
+    };
+
+    const actions = actionConfig[currentState];
+
+    if (!actions) {
+      return (
+        <Typography variant="body2" color="text.secondary">
+          No hay acciones disponibles para este estado.
+        </Typography>
+      );
+    }
+
+    return actions.map(action => actionButton(action.targetState, action.label));
+  };
+
   return (
     <Box sx={{ p: { xs: 2, sm: 3, md: 4 }, backgroundColor: "#f5f7fa", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center" }}>
       <Typography variant="h4" color="primary" sx={{ textAlign: "center", mb: 4, fontWeight: "bold", fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' }, wordBreak: 'break-word', px: { xs: 1, sm: 0 } }}>
@@ -187,32 +255,6 @@ export default function DetalleSolicitudPage() {
           <Typography variant="body1"><strong>Fecha:</strong> {solicitud.detalles?.fecha ?? "—"}</Typography>
           <Typography variant="body1"><strong>Monto:</strong> {solicitud.detalles?.monto ?? "—"}</Typography>
           <Typography variant="body1"><strong>Proveedor:</strong> {solicitud.detalles?.proveedor ?? "—"}</Typography>
-          <Grid container spacing={1} sx={{ mt: 2, flexWrap: 'nowrap' }}>
-            <Grid item>
-              <Button
-                variant="outlined"
-                component="a"
-                href="/ruta/a/factura.pdf" // Reemplazar con la ruta real
-                download
-                size="small"
-                sx={{ fontSize: '0.75rem', whiteSpace: 'nowrap' }}
-              >
-                Descargar Factura
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="outlined"
-                component="a"
-                href="/ruta/a/receta.pdf" // Reemplazar con la ruta real
-                download
-                size="small"
-                sx={{ fontSize: '0.75rem', whiteSpace: 'nowrap' }}
-              >
-                Descargar Receta
-              </Button>
-            </Grid>
-          </Grid>
         </InfoCard>
 
         <InfoCard icon={<EditNoteIcon sx={{ fontSize: 70 }} color="action" />} title="Archivos adjuntos">
@@ -243,24 +285,16 @@ export default function DetalleSolicitudPage() {
 
                 <InfoCard 
           icon={<CheckBoxIcon sx={{ fontSize: 70 }} color="action" />} 
-          title="Acción"
+          title="Cambiar de estado"
           action={
             <IconButton onClick={() => setHistorialModalOpen(true)} color="primary">
               <HistoryIcon />
             </IconButton>
           }
         >
-          <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="estado-label">Cambiar Estado</InputLabel>
-            <Select
-              labelId="estado-label"
-              value={nuevoEstado}
-              label="Cambiar Estado"
-              onChange={e => setNuevoEstado(e.target.value)}
-            >
-              {ESTADOS.map(e => <MenuItem key={e.value} value={e.value}>{e.label}</MenuItem>)}
-            </Select>
-          </FormControl>
+          <Box sx={{ mb: 0 }}>
+            {renderActionButtons()}
+          </Box>
           <TextField
             label="Ingresar motivo"
             multiline

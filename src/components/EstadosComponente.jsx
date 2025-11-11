@@ -35,7 +35,19 @@ const getEstadoDisplay = (estado) => {
     }
 };
 
-const getEstadoProps = (estado) => {
+export const getColoresPorEstado = (estado) => {
+    const colores = {
+        "Recibido": { bg: '#F0F0F0', text: '#777777' },
+        "En Análisis": { bg: '#B5D6FF', text: '#2563EB' },
+        "EnAnalisis": { bg: '#B5D6FF', text: '#2563EB' },
+        "Observado": { bg: '#FFEDB6', text: '#EAB308' },
+        "Aprobado": { bg: '#D1FFCE', text: '#4BAE72' },
+        "Rechazado": { bg: '#FFCECE', text: '#DC2626' },
+    };
+    return colores[estado] || { bg: '#e0e0e0', text: '#000' };
+};
+
+export const getEstadoProps = (estado) => {
     const colores = {
         Recibido: { bg: '#F0F0F0', text: '#777777' },
         EnAnalisis: { bg: '#B5D6FF', text: '#2563EB' },
